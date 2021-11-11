@@ -1,6 +1,9 @@
 <template>
   <div id="wrapper">
-    <div class="container">
+    <div
+      class="container"
+      :style="`transform: translate(-50%, 50%) perspective(300px) rotateX(${x}deg) rotateY(${y}deg)`"
+    >
       <div class="main">
         <div class="box1a">BOX</div>
         <div class="box1b"></div>
@@ -19,6 +22,43 @@
 export default {
   name: "App",
   components: {},
+  data() {
+    return {
+      x: 0,
+      y: 0,
+    };
+  },
+  mounted() {
+    document.addEventListener("mousemove", this.getCursorPosition);
+    // window.addEventListener("resize", this.updateViewportSize);
+  },
+  methods: {
+    getCursorPosition(event) {
+      console.log((event.pageX / window.innerWidth).toFixed(2));
+      console.log((event.pageY / window.innerHeight).toFixed(2));
+      this.y =
+        ((event.pageX - window.innerWidth / 2) / window.innerWidth).toFixed(2) *
+        34;
+      this.x =
+        ((event.pageY - window.innerHeight / 2) / window.innerHeight).toFixed(
+          2
+        ) * -34;
+    },
+  },
+  computed: {
+    styles() {
+      return {
+        y:
+          ((event.pageX - window.innerWidth / 2) / window.innerWidth).toFixed(
+            2
+          ) * 34,
+        x:
+          ((event.pageY - window.innerHeight / 2) / window.innerHeight).toFixed(
+            2
+          ) * -34,
+      };
+    },
+  },
 };
 </script>
 
@@ -37,11 +77,12 @@ body,
 .container {
   position: relative;
   width: 100vw;
-  top: 100px;
-  left: 100px;
-  transform: perspective(200px) rotateX(-5deg) rotateY(-5deg);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) perspective(200px) rotateX(-5deg)
+    rotateY(-5deg);
   display: grid;
-  grid-template-columns: 400px 1fr;
+  grid-template-columns: 60% 1fr;
   grid-template-rows: 240px;
   gap: 0px 0px;
   grid-template-areas: "main sec";
@@ -99,6 +140,7 @@ body,
   background: rgb(104, 101, 101);
   transition: 0.5s;
   cursor: pointer;
+  border: 1px solid rgb(46, 46, 46);
 }
 /* .box1d:hover {
   background: rgb(93, 106, 119);
@@ -106,11 +148,17 @@ body,
   transform: translate(-20px, 20px);
   transition: 0.5s;
 } */
-:where(.box1a, .box1b, .box1c, .box1d, .box2A, .box2B):hover {
+/* :where(.box1a, .box1b, .box1c, .box1d, .box2A, .box2B):hover {
   background: rgb(93, 106, 119);
   box-shadow: 5px 5px 10px rgb(65, 65, 65);
   transform: translate(-20px, 20px) scale(1.05);
   transition: 0.5s;
+} */
+:where(.box1a, .box1b, .box1c, .box1d, .box2A, .box2B):hover {
+  background: rgb(0, 74, 148);
+  box-shadow: -5px -5px 5px 5px 10px rgb(110, 0, 138);
+  transform: scale(1.1);
+  transition: 0.3s;
 }
 .box2A:hover {
   transform: translate(21px, -20px) scale(0.9);
